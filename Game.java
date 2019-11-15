@@ -1,4 +1,4 @@
-//Ethan Hays 
+//Ethan Hays  
 
 
 //I've chosen to make Game a separate class from the runner file mostly for organizational purposes,
@@ -14,7 +14,7 @@
 
 
 
-import java.util.Scanner;
+import java.util.Scanner; 
 import java.util.ArrayList;
 
 public class Game
@@ -69,6 +69,8 @@ public class Game
 				for(int i = 0; i < numShuffle; i++) {
 					deck.RandomShuffle();
 				}
+				computer1.Bet(10);
+				computer2.Bet(5);
 			}
 			else if(DealerTurn % 3 == 1) {
 				int shuffles = (int)(Math.random() * 10) + 4;
@@ -77,6 +79,7 @@ public class Game
 				}
 				System.out.println("You post the Small Blind this round. (5 chips)");
 				user.Bet(5);
+				computer2.Bet(10);
 			}
 			else {
 				int shuffles = (int)(Math.random() * 10) + 4;
@@ -85,25 +88,97 @@ public class Game
 				}
 				System.out.println("You post the Big Blind this round. (10 chips)");
 				user.Bet(10);
+				computer1.Bet(5);
 			}
 			
 			System.out.println("BEGINNING OPENING DEAL\n");
 			
 			OpeningDeal(deck, DealerTurn, placeInDeck, user, computer1, computer2);
+			placeInDeck += 6; //have to account for Java being pass-by-value
+			
+			//System.out.println("\n\nplace in deck: " + placeInDeck + "\n\n");
 			
 			//System.out.println("***** " + placeInDeck + " *****\n");
 			
+			pot += 15; //the small and big blind
+			
 			DisplayPlayerInfo(user, computer1, computer2, pot);
 			
-			RoundOfBetting(input, DealerTurn, user, pot, userFold);
 			
-			pot += 15;
+			
+			
+			
+			//RoundOfBetting(input, DealerTurn, user, pot, userFold);
+			answer = 0;
+			if(DealerTurn % 3 == 0) { //USER BETS LAST
+				System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+				answer = input.nextInt();
+				if(answer == 1) {
+					//Must program the computer player to make a bet, if any
+				}
+				else if(answer == 2) {
+					System.out.println("How much would you like to bet? (on top of amount to call)");
+					answer = input.nextInt();
+					user.Bet(answer);
+					pot += answer;
+					//Must program the computer player to make a raise with certain conditions
+				}
+				else {
+					System.out.println("You fold, simulating the rest of the round.");		
+					userFold = true;
+				}
+			}
+			else if(DealerTurn % 3 == 1) { //USER BETS FIRST
+				System.out.println("Press 1 to check\nPress 2 to raise\nPress 3 to Fold\n");
+				answer = input.nextInt();
+				if(answer == 1) {
+					//Must program the computer player to make a bet, if any
+				}
+				else if(answer == 2) {
+					System.out.println("How much would you like to bet?");
+					answer = input.nextInt();
+					user.Bet(answer);
+					pot += answer;
+					//Must program the computer player to make a raise with certain conditions
+				}
+				else {
+					System.out.println("You fold, simulating the rest of the round.");			
+					userFold = true;
+				}
+			}
+			else {    //USER BETS SECOND
+				System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+				answer = input.nextInt();
+				if(answer == 1) {
+					//Must program the computer player to make a bet, if any
+				}
+				else if(answer == 2) {
+					System.out.println("How much would you like to bet? (on top of amount to call)");
+					answer = input.nextInt();
+					user.Bet(answer);
+					pot += answer;
+					//Must program the computer player to make a raise with certain conditions
+				}
+				else {
+					System.out.println("You fold, simulating the rest of the round.");			
+					userFold = true;
+				}
+			}
+			
+			
+			
+			
+			
 			
 			System.out.println("\nFIRST ROUND OF ADDING TO THE RIVER:");
 			
 			ArrayList<Card> River = new ArrayList<Card>();
 			for(int i = 0; i < 3; i++) {
+				//System.out.println("***** " + placeInDeck + " *****\n");
+				placeInDeck++;
 				BurnAndTurn(deck, placeInDeck, River, user, computer1, computer2);
+				placeInDeck++;
+				//System.out.println("\n******" + placeInDeck + "******\n");
 			}
 			
 			//System.out.println("***** " + placeInDeck + " *****\n");
@@ -114,15 +189,254 @@ public class Game
 				
 				DisplayPlayerInfo(user, computer1, computer2, pot);
 			
-				RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				//RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				answer = 0;
+				if(DealerTurn % 3 == 0) { //USER BETS LAST
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");		
+						userFold = true;
+					}
+				}
+				else if(DealerTurn % 3 == 1) { //USER BETS FIRST
+					System.out.println("Press 1 to check\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet?");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				else {    //USER BETS SECOND
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				
+				
+				
+				
+				
 			}
 			else { //THE USER HAS FOLDED
-				ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//computer1 first
+				if(DealerTurn % 3 == 0) {
+					if(computer1.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+						computer1.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 2 bets " + bet1 + " chips.");
+						if(computer2.getHandStrength() > 3) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+						computer1.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 2 checks.");
+						}
+						else {
+							System.out.println("Player 2 bets " + bet1 + "chips.");
+						}
+						if(computer2.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 3 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer1.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 2 calls.");
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer2 first
+				else if(DealerTurn % 3 == 1) {
+					if(computer2.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer2.getChips() * .30) + 20);
+						computer2.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 3 bets " + bet1 + " chips.");
+						if(computer1.getHandStrength() > 3) { 
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 2 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 2 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer2.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 3 calls.");
+							}
+						} 
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer2.getChips() * .05));
+						computer2.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 3 checks.");
+						}
+						else {
+							System.out.println("Player 3 bets " + bet1 + "chips.");
+						}
+						if(computer1.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer1.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 2 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer2.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 3 calls.");
+						}
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer1 first
+				else { 
+					if(DealerTurn % 3 == 0) {
+						if(computer1.getHandStrength() > 3) {
+							int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 bets " + bet1 + " chips.");
+							if(computer2.getHandStrength() > 3) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								if(bet2 == bet1) {
+									System.out.println("Player 3 calls " + bet1 + " chips.");
+								}
+								else {
+									System.out.println("Player 3 raises to " + bet2 + " chips.");
+									int bet3 = bet2 - bet1;
+									computer1.Bet(bet3);
+									pot += bet3;
+									System.out.println("Player 2 calls.");
+								}
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+					}
+						else {
+							int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+							computer1.Bet(bet1);
+							pot += bet1;
+							if(bet1 == 0) {
+								System.out.println("Player 2 checks.");
+							}
+							else {
+								System.out.println("Player 2 bets " + bet1 + "chips.");
+							}
+							if(computer2.getHandStrength() > 1) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
 			} 
 			
 			System.out.println("\nSECOND ROUND OF ADDING TO THE RIVER:");
 			
+			//System.out.println("***** " + placeInDeck + " *****\n");
+			
+			placeInDeck++;
 			BurnAndTurn(deck, placeInDeck, River, user, computer1, computer2);
+			placeInDeck++;
 			
 			//System.out.println("***** " + placeInDeck + " *****\n");
 			
@@ -131,15 +445,257 @@ public class Game
 			
 			if(!userFold) {
 				DisplayPlayerInfo(user, computer1, computer2, pot);
-				RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				//RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				answer = 0;
+				if(DealerTurn % 3 == 0) { //USER BETS LAST
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");		
+						userFold = true;
+					}
+				}
+				else if(DealerTurn % 3 == 1) { //USER BETS FIRST
+					System.out.println("Press 1 to check\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet?");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				else {    //USER BETS SECOND
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
 			}
 			else {
-				ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//computer1 first
+				if(DealerTurn % 3 == 0) {
+					if(computer1.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+						computer1.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 2 bets " + bet1 + " chips.");
+						if(computer2.getHandStrength() > 3) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+						computer1.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 2 checks.");
+						}
+						else {
+							System.out.println("Player 2 bets " + bet1 + "chips.");
+						}
+						if(computer2.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 3 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer1.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 2 calls.");
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer2 first
+				else if(DealerTurn % 3 == 1) {
+					if(computer2.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer2.getChips() * .30) + 20);
+						computer2.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 3 bets " + bet1 + " chips.");
+						if(computer1.getHandStrength() > 3) { 
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 2 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 2 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer2.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 3 calls.");
+							}
+						} 
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer2.getChips() * .05));
+						computer2.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 3 checks.");
+						}
+						else {
+							System.out.println("Player 3 bets " + bet1 + "chips.");
+						}
+						if(computer1.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer1.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 2 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer2.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 3 calls.");
+						}
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer1 first
+				else { 
+					if(DealerTurn % 3 == 0) {
+						if(computer1.getHandStrength() > 3) {
+							int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 bets " + bet1 + " chips.");
+							if(computer2.getHandStrength() > 3) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								if(bet2 == bet1) {
+									System.out.println("Player 3 calls " + bet1 + " chips.");
+								}
+								else {
+									System.out.println("Player 3 raises to " + bet2 + " chips.");
+									int bet3 = bet2 - bet1;
+									computer1.Bet(bet3);
+									pot += bet3;
+									System.out.println("Player 2 calls.");
+								}
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+					}
+						else {
+							int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+							computer1.Bet(bet1);
+							pot += bet1;
+							if(bet1 == 0) {
+								System.out.println("Player 2 checks.");
+							}
+							else {
+								System.out.println("Player 2 bets " + bet1 + "chips.");
+							}
+							if(computer2.getHandStrength() > 1) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			}
 			
 			System.out.println("\nTHIRD AND FINAL ROUND OF ADDING TO THE RIVER:");
 			
+			//System.out.println("***** " + placeInDeck + " *****\n");
+			
+			placeInDeck++;
 			BurnAndTurn(deck, placeInDeck, River, user, computer1, computer2);
+			placeInDeck++;
 			
 			//System.out.println("***** " + placeInDeck + " *****\n");
 			
@@ -148,10 +704,248 @@ public class Game
 			if(!userFold) {
 				DisplayPlayerInfo(user, computer1, computer2, pot);
 				System.out.println("\n*****FINAL ROUND OF BETTING*****\n\n");
-				RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				//RoundOfBetting(input, DealerTurn, user, pot, userFold);
+				answer = 0;
+				if(DealerTurn % 3 == 0) { //USER BETS LAST
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");		
+						userFold = true;
+					}
+				}
+				else if(DealerTurn % 3 == 1) { //USER BETS FIRST
+					System.out.println("Press 1 to check\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet?");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				else {    //USER BETS SECOND
+					System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
+					answer = input.nextInt();
+					if(answer == 1) {
+						//Must program the computer player to make a bet, if any
+					}
+					else if(answer == 2) {
+						System.out.println("How much would you like to bet? (on top of amount to call)");
+						answer = input.nextInt();
+						user.Bet(answer);
+						pot += answer;
+						//Must program the computer player to make a raise with certain conditions
+					}
+					else {
+						System.out.println("You fold, simulating the rest of the round.");			
+						userFold = true;
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
 			}
 			else {
-				ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//ComputerBetOff(DealerTurn, pot, computer1, computer2);
+				//computer1 first
+				if(DealerTurn % 3 == 0) {
+					if(computer1.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+						computer1.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 2 bets " + bet1 + " chips.");
+						if(computer2.getHandStrength() > 3) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+						computer1.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 2 checks.");
+						}
+						else {
+							System.out.println("Player 2 bets " + bet1 + "chips.");
+						}
+						if(computer2.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer2.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 3 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer1.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 2 calls.");
+						}
+						else {
+							computer2.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 3 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer2 first
+				else if(DealerTurn % 3 == 1) {
+					if(computer2.getHandStrength() > 3) {
+						int bet1 = (int)(Math.random() * (computer2.getChips() * .30) + 20);
+						computer2.Bet(bet1);
+						pot += bet1;
+						System.out.println("Player 3 bets " + bet1 + " chips.");
+						if(computer1.getHandStrength() > 3) { 
+							int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							if(bet2 == bet1) {
+								System.out.println("Player 2 calls " + bet1 + " chips.");
+							}
+							else {
+								System.out.println("Player 2 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer2.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 3 calls.");
+							}
+						} 
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+					else {
+						int bet1 = (int)(Math.random()*(computer2.getChips() * .05));
+						computer2.Bet(bet1);
+						pot += bet1;
+						if(bet1 == 0) {
+							System.out.println("Player 3 checks.");
+						}
+						else {
+							System.out.println("Player 3 bets " + bet1 + "chips.");
+						}
+						if(computer1.getHandStrength() > 1) {
+							int bet2 = (int)(Math.random() * (computer1.getChips() * .10) + bet1);
+							computer1.Bet(bet2);
+							pot += bet2;
+							System.out.println("Player 2 raises to " + bet2 + " chips.");
+							int bet3 = bet2 - bet1;
+							computer2.Bet(bet3);
+							pot += bet3;
+							System.out.println("Player 3 calls.");
+						}
+						else {
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 calls " + bet1 + " chips.");
+						}
+					}
+				}
+				//computer1 first
+				else { 
+					if(DealerTurn % 3 == 0) {
+						if(computer1.getHandStrength() > 3) {
+							int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
+							computer1.Bet(bet1);
+							pot += bet1;
+							System.out.println("Player 2 bets " + bet1 + " chips.");
+							if(computer2.getHandStrength() > 3) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								if(bet2 == bet1) {
+									System.out.println("Player 3 calls " + bet1 + " chips.");
+								}
+								else {
+									System.out.println("Player 3 raises to " + bet2 + " chips.");
+									int bet3 = bet2 - bet1;
+									computer1.Bet(bet3);
+									pot += bet3;
+									System.out.println("Player 2 calls.");
+								}
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+					}
+						else {
+							int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
+							computer1.Bet(bet1);
+							pot += bet1;
+							if(bet1 == 0) {
+								System.out.println("Player 2 checks.");
+							}
+							else {
+								System.out.println("Player 2 bets " + bet1 + "chips.");
+							}
+							if(computer2.getHandStrength() > 1) {
+								int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
+								computer2.Bet(bet2);
+								pot += bet2;
+								System.out.println("Player 3 raises to " + bet2 + " chips.");
+								int bet3 = bet2 - bet1;
+								computer1.Bet(bet3);
+								pot += bet3;
+								System.out.println("Player 2 calls.");
+							}
+							else {
+								computer2.Bet(bet1);
+								pot += bet1;
+								System.out.println("Player 3 calls " + bet1 + " chips.");
+							}
+						}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			}
 			
 			System.out.println("\n\n\nBETTING IS OVER, SHOWING CARDS:");
@@ -167,7 +961,7 @@ public class Game
 			FindWinner(userFold, computer1Fold, computer2Fold, user, computer1, computer2, pot);
 			
 			
-			System.out.println("Press 1 if you would like to continue\n"
+			System.out.println("\nPress 1 if you would like to continue\n"
 					+ "Press 2 if you would like to cash out");
 			answer = input.nextInt();
 			
@@ -320,251 +1114,32 @@ public class Game
 	
 	
 	//runs the logic of whose turn it is to make a bet, and how the computer players will react
-	public void RoundOfBetting(Scanner input, int DealerTurn, Player user, int pot, boolean userFold) {
-		int answer = 0;
-		if(DealerTurn % 3 == 0) { //USER BETS LAST
-			System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
-			answer = input.nextInt();
-			if(answer == 1) {
-				//Must program the computer player to make a bet, if any
-			}
-			else if(answer == 2) {
-				System.out.println("How much would you like to bet? (on top of amount to call)");
-				answer = input.nextInt();
-				user.Bet(answer);
-				pot += answer;
-				//Must program the computer player to make a raise with certain conditions
-			}
-			else {
-				System.out.println("You fold, simulating the rest of the round.");		
-				userFold = true;
-			}
-		}
-		else if(DealerTurn % 3 == 1) { //USER BETS FIRST
-			System.out.println("Press 1 to check\nPress 2 to raise\nPress 3 to Fold\n");
-			answer = input.nextInt();
-			if(answer == 1) {
-				//Must program the computer player to make a bet, if any
-			}
-			else if(answer == 2) {
-				System.out.println("How much would you like to bet?");
-				answer = input.nextInt();
-				user.Bet(answer);
-				pot += answer;
-				//Must program the computer player to make a raise with certain conditions
-			}
-			else {
-				System.out.println("You fold, simulating the rest of the round.");			
-				userFold = true;
-			}
-		}
-		else {    //USER BETS SECOND
-			System.out.println("Press 1 to call\nPress 2 to raise\nPress 3 to Fold\n");
-			answer = input.nextInt();
-			if(answer == 1) {
-				//Must program the computer player to make a bet, if any
-			}
-			else if(answer == 2) {
-				System.out.println("How much would you like to bet? (on top of amount to call)");
-				answer = input.nextInt();
-				user.Bet(answer);
-				pot += answer;
-				//Must program the computer player to make a raise with certain conditions
-			}
-			else {
-				System.out.println("You fold, simulating the rest of the round.");			
-				userFold = true;
-			}
-		}
-		return;
-	}
+	//public void RoundOfBetting(Scanner input, int DealerTurn, Player user, int pot, boolean userFold) {
+		
+		//return userFold;
+	//}
+
 	
 	
 	
 	//burns a card from the deck, and adds another to the river
 	public void BurnAndTurn(Deck deck, int placeInDeck, ArrayList<Card> River, Player user, Player computer1, Player computer2) {
-		placeInDeck++; //Burn a card
+		//placeInDeck++; //Burn a card
 		
 		River.add(deck.get(placeInDeck));
 		user.add(deck.get(placeInDeck));
 		computer1.add(deck.get(placeInDeck));
 		computer2.add(deck.get(placeInDeck));
-		placeInDeck++;
+		//placeInDeck++;
 		return;
 	}
 	
 	
 	
 	//runs the logic for how the computer players bet against each other if the user has folded
-	public void ComputerBetOff(int DealerTurn, int pot, Player computer1, Player computer2) {
-		//computer1 first
-		if(DealerTurn % 3 == 0) {
-			if(computer1.getHandStrength() > 3) {
-				int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
-				computer1.Bet(bet1);
-				pot += bet1;
-				System.out.println("Player 2 bets " + bet1 + " chips.");
-				if(computer2.getHandStrength() > 3) {
-					int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
-					computer2.Bet(bet2);
-					pot += bet2;
-					if(bet2 == bet1) {
-						System.out.println("Player 3 calls " + bet1 + " chips.");
-					}
-					else {
-						System.out.println("Player 3 raises to " + bet2 + " chips.");
-						int bet3 = bet2 - bet1;
-						computer1.Bet(bet3);
-						pot += bet3;
-						System.out.println("Player 2 calls.");
-					}
-				}
-				else {
-					computer2.Bet(bet1);
-					pot += bet1;
-					System.out.println("Player 3 calls " + bet1 + " chips.");
-				}
-			}
-			else {
-				int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
-				computer1.Bet(bet1);
-				pot += bet1;
-				if(bet1 == 0) {
-					System.out.println("Player 2 checks.");
-				}
-				else {
-					System.out.println("Player 2 bets " + bet1 + "chips.");
-				}
-				if(computer2.getHandStrength() > 1) {
-					int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
-					computer2.Bet(bet2);
-					pot += bet2;
-					System.out.println("Player 3 raises to " + bet2 + " chips.");
-					int bet3 = bet2 - bet1;
-					computer1.Bet(bet3);
-					pot += bet3;
-					System.out.println("Player 2 calls.");
-				}
-				else {
-					computer2.Bet(bet1);
-					pot += bet1;
-					System.out.println("Player 3 calls " + bet1 + " chips.");
-				}
-			}
-		}
-		//computer2 first
-		else if(DealerTurn % 3 == 1) {
-			if(computer2.getHandStrength() > 3) {
-				int bet1 = (int)(Math.random() * (computer2.getChips() * .30) + 20);
-				computer2.Bet(bet1);
-				pot += bet1;
-				System.out.println("Player 3 bets " + bet1 + " chips.");
-				if(computer1.getHandStrength() > 3) { 
-					int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
-					computer1.Bet(bet2);
-					pot += bet2;
-					if(bet2 == bet1) {
-						System.out.println("Player 2 calls " + bet1 + " chips.");
-					}
-					else {
-						System.out.println("Player 2 raises to " + bet2 + " chips.");
-						int bet3 = bet2 - bet1;
-						computer2.Bet(bet3);
-						pot += bet3;
-						System.out.println("Player 3 calls.");
-					}
-				} 
-				else {
-					computer1.Bet(bet1);
-					pot += bet1;
-					System.out.println("Player 2 calls " + bet1 + " chips.");
-				}
-			}
-			else {
-				int bet1 = (int)(Math.random()*(computer2.getChips() * .05));
-				computer2.Bet(bet1);
-				pot += bet1;
-				if(bet1 == 0) {
-					System.out.println("Player 3 checks.");
-				}
-				else {
-					System.out.println("Player 3 bets " + bet1 + "chips.");
-				}
-				if(computer1.getHandStrength() > 1) {
-					int bet2 = (int)(Math.random() * (computer1.getChips() * .10) + bet1);
-					computer1.Bet(bet2);
-					pot += bet2;
-					System.out.println("Player 2 raises to " + bet2 + " chips.");
-					int bet3 = bet2 - bet1;
-					computer2.Bet(bet3);
-					pot += bet3;
-					System.out.println("Player 3 calls.");
-				}
-				else {
-					computer1.Bet(bet1);
-					pot += bet1;
-					System.out.println("Player 2 calls " + bet1 + " chips.");
-				}
-			}
-		}
-		//computer1 first
-		else { 
-			if(DealerTurn % 3 == 0) {
-				if(computer1.getHandStrength() > 3) {
-					int bet1 = (int)(Math.random() * (computer1.getChips() * .30) + 20);
-					computer1.Bet(bet1);
-					pot += bet1;
-					System.out.println("Player 2 bets " + bet1 + " chips.");
-					if(computer2.getHandStrength() > 3) {
-						int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
-						computer2.Bet(bet2);
-						pot += bet2;
-						if(bet2 == bet1) {
-							System.out.println("Player 3 calls " + bet1 + " chips.");
-						}
-						else {
-							System.out.println("Player 3 raises to " + bet2 + " chips.");
-							int bet3 = bet2 - bet1;
-							computer1.Bet(bet3);
-							pot += bet3;
-							System.out.println("Player 2 calls.");
-						}
-					}
-					else {
-						computer2.Bet(bet1);
-						pot += bet1;
-						System.out.println("Player 3 calls " + bet1 + " chips.");
-					}
-				}
-			}
-				else {
-					int bet1 = (int)(Math.random()*(computer1.getChips() * .05));
-					computer1.Bet(bet1);
-					pot += bet1;
-					if(bet1 == 0) {
-						System.out.println("Player 2 checks.");
-					}
-					else {
-						System.out.println("Player 2 bets " + bet1 + "chips.");
-					}
-					if(computer2.getHandStrength() > 1) {
-						int bet2 = (int)(Math.random() * (computer2.getChips() * .10) + bet1);
-						computer2.Bet(bet2);
-						pot += bet2;
-						System.out.println("Player 3 raises to " + bet2 + " chips.");
-						int bet3 = bet2 - bet1;
-						computer1.Bet(bet3);
-						pot += bet3;
-						System.out.println("Player 2 calls.");
-					}
-					else {
-						computer2.Bet(bet1);
-						pot += bet1;
-						System.out.println("Player 3 calls " + bet1 + " chips.");
-					}
-				}
-		}
-	}
+	//public void ComputerBetOff(int DealerTurn, int pot, Player computer1, Player computer2) {
+		
+	//}
 	
 	
 	
